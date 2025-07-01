@@ -15,6 +15,8 @@ public class SettingsController : MonoBehaviour
     [Header("Music Control Buttons")]
     public Button prevMusicButton;
     public Button nextMusicButton;
+    public Button playMusicButton;
+    public Button playSfxButton;
     [Header("Exit Button")]
     public Button exitButton;
 
@@ -31,10 +33,24 @@ public class SettingsController : MonoBehaviour
         prevMusicButton.onClick.AddListener(() => SettingsManager.Instance.ChangeMusic(-1));
         nextMusicButton.onClick.AddListener(() => SettingsManager.Instance.ChangeMusic(1));
         exitButton.onClick.AddListener(OnCloseButtonClicked);
+        playMusicButton.onClick.AddListener(OnPlayMusicButtonClicked);
+        playSfxButton.onClick.AddListener(OnPlaySfxButtonClicked);
     }
 
     public void OnCloseButtonClicked()
     {
         SettingsLoader.Instance.CloseSettings();
+    }
+    public void OnPlayMusicButtonClicked()
+    {
+        float newValue = musicSlider.value > 0 ? 0f : 1f;
+        musicSlider.value = newValue;
+        SettingsManager.Instance.SetMusicVolume(newValue);
+    }
+    public void OnPlaySfxButtonClicked()
+    {
+        float newValue = sfxSlider.value > 0 ? 0f : 1f;
+        sfxSlider.value = newValue;
+        SettingsManager.Instance.SetSFXVolume(newValue);
     }
 }
