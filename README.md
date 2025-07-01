@@ -43,7 +43,7 @@ SettingsPlugins/
 ### 1. Importer le Plugin
 
 #### Option A : Fichier UnityPackage (Recommandé)
-- Téléchargez le fichier `SettingsPlugins.unitypackage` depuis la section [Téléchargements](#-téléchargements)
+- Téléchargez le fichier `SettingsPlugins.unitypackage` depuis la section [Téléchargements]([#-téléchargements](https://drive.google.com/file/d/1a3foQoLAntNlRLS5pyWVg2mu-oSe6as-/view?usp=drive_link))
 - Double-cliquez sur le fichier `.unitypackage` pour l'importer dans Unity
 - Tous les assets, scripts et prefabs seront automatiquement importés dans votre projet
 - Le plugin utilise le namespace `TheFlow.Audio`
