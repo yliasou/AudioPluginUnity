@@ -1,4 +1,4 @@
-# SettingsPlugins - Plugin Audio Unity 
+#  Plugin Audio Unity - TheFlow
 
 Un plugin Unity complet pour gérer les paramètres audio, la musique de fond et les effets sonores avec un système d'interface utilisateur complet et un stockage persistant.
 
