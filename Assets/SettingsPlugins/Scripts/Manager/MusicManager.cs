@@ -184,6 +184,26 @@ namespace TheFlow.Audio
             fadeCoroutine = null;
         }
 
+        /// <summary>
+        /// Updates the music playback state, checking if music should be played or looped.    
+        private void Update()
+        {
+            // If music is not playing and a clip is set, play next in queue or loop
+            if (musicSource != null && !musicSource.isPlaying && musicSource.clip != null && fadeCoroutine == null)
+            {
+                if (musicQueue.Count > 0)
+                {
+                    PlayNextInQueue();
+                }
+                else
+                {
+                    // Loop to next track in list, or back to first
+                    int nextIndex = (currentMusicIndex + 1) % musicList.Count;
+                    PlayMusicByIndex(nextIndex);
+                }
+            }
+        }
+
         // ========== QUEUE SYSTEM ==========
 
         /// <summary>
