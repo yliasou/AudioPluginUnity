@@ -10,6 +10,7 @@ Un plugin Unity complet pour gérer les paramètres audio, la musique de fond et
 - **Fondu Musical** : Transitions fluides entre pistes musicales avec durée de fondu personnalisable
 - **Système de File d'Attente** : Mise en file d'attente de plusieurs pistes pour une lecture séquentielle
 - **Contrôle du Volume** : Contrôle indépendant pour les volumes de musique et SFX (plage 0-1)
+- **Gestion par ScriptableObjects** : Centralisation des listes de musiques et SFX via des assets réutilisables
 
 ### Système de Paramètres
 - **Stockage Persistant** : Les paramètres sont automatiquement sauvegardés avec PlayerPrefs
@@ -29,12 +30,14 @@ SettingsPlugins/
 ├── Audios/
 │   ├── Musics/          # Pistes de musique de fond
 │   └── Sfxs/           # Clips d'effets sonores
+├── ExempleScriptable/   # Exemples de ScriptableObjects MusicList et SFXList
 ├── Prefabs/            # Prefabs prêts à l'emploi
 ├── Scenes/             # Scènes de démonstration et de paramètres
 └── Scripts/
     ├── Controller/     # Contrôleurs d'interface
     ├── Loader/         # Utilitaires de chargement de scènes
     ├── Manager/        # Gestionnaires audio et paramètres principaux
+    ├── Scriptables/    # ScriptableObjects pour les listes de musiques et SFX
     └── Dummys/         # Implémentations d'exemple
 ```
 
@@ -56,8 +59,9 @@ SettingsPlugins/
 1. Créez un GameObject vide dans votre scène
 2. Ajoutez le composant `MusicManager`
 3. Assignez des composants AudioSource pour la musique et les SFX
-4. Ajoutez vos pistes musicales à la `musicList`
-5. Ajoutez des entrées SFX avec des clés et des AudioClips
+4. Créez un ScriptableObject `MusicList` (clic droit dans le Project > Create > SettingsPlugins > MusicList) et ajoutez-y vos pistes musicales
+5. Créez un ScriptableObject `SFXList` (clic droit dans le Project > Create > SettingsPlugins > SFXList) et ajoutez-y vos SFX (clé + AudioClip)
+6. Assignez ces ScriptableObjects dans le composant `MusicManager` dans l'inspecteur
 
 ### 3. Configurer le Gestionnaire de Paramètres
 1. Créez un GameObject vide dans votre scène
@@ -78,6 +82,26 @@ SettingsLoader.Instance.OpenSettings();
 // Fermer les paramètres
 SettingsLoader.Instance.CloseSettings();
 ```
+
+## 🎼 Utilisation des ScriptableObjects
+
+Le plugin utilise des ScriptableObjects pour centraliser et réutiliser facilement vos listes audio :
+
+### Création des ScriptableObjects
+- **MusicList** : Clic droit dans le Project > Create > SettingsPlugins > MusicList
+- **SFXList** : Clic droit dans le Project > Create > SettingsPlugins > SFXList
+
+### Avantages
+- **Centralisation** : Gérez toutes vos musiques et SFX dans des assets séparés
+- **Réutilisabilité** : Utilisez les mêmes listes dans plusieurs scènes ou projets
+- **Organisation** : Gardez votre projet organisé avec des assets dédiés
+- **Édition facile** : Modifiez vos listes audio sans toucher au code
+
+### Configuration
+1. Créez vos ScriptableObjects dans le dossier de votre choix
+2. Ajoutez vos musiques/SFX dans ces assets
+3. Assignez-les dans le composant `MusicManager`
+4. Le système chargera automatiquement les listes au démarrage
 
 ## 🎮 Exemples d'Utilisation
 
@@ -120,8 +144,8 @@ SettingsManager.Instance.OnSFXVolumeChanged.AddListener(OnSFXVolumeChanged);
 
 ### Paramètres du Music Manager
 - **Durée de Fondu** : Temps en secondes pour les transitions musicales (par défaut : 1,5s)
-- **Liste de Musique** : Tableau d'objets AudioClip pour la musique de fond
-- **Liste SFX** : Dictionnaire de paires clé-valeur pour les effets sonores
+- **MusicList** : ScriptableObject contenant les AudioClips de musique de fond
+- **SFXList** : ScriptableObject contenant les paires clé/AudioClip pour les effets sonores
 
 ### Gestionnaire de Paramètres
 - **Volumes par Défaut** : Les volumes de musique et SFX sont sauvegardés avec des valeurs par défaut de 0,5
@@ -144,8 +168,6 @@ Le plugin inclut un système d'interface complet avec :
 - **[SettingsPlugins.unitypackage](link-to-unitypackage)** - Fichier UnityPackage complet pour une intégration facile
 - Inclut tous les scripts, prefabs, scènes et assets audio
 - Compatible avec Unity 2019.4 LTS et versions ultérieures
-
-
 
 ## 📋 Prérequis
 
@@ -174,6 +196,7 @@ SettingsManager.Instance.OnMusicVolumeChanged.AddListener(OnMusicVolumeChanged);
 3. **PlayerPrefs** : Les paramètres sont automatiquement sauvegardés et restaurés
 4. **Gestion des AudioListener** : Le plugin gère automatiquement les conflits AudioListener
 5. **Gestion d'Erreurs** : Inclut des messages d'avertissement pour les clés SFX manquantes
+6. **ScriptableObjects** : Utilisez les ScriptableObjects pour organiser vos listes audio de manière modulaire
 
 ## 💡 Conseils d'Intégration
 
@@ -181,20 +204,23 @@ SettingsManager.Instance.OnMusicVolumeChanged.AddListener(OnMusicVolumeChanged);
 - **Testez les Scènes de Démo** : Lancez les scènes incluses pour voir le plugin en action
 - **Personnalisez les Prefabs** : Modifiez les prefabs fournis selon vos besoins
 - **Vérifiez les Namespaces** : Assurez-vous que `TheFlow.Audio` est bien importé
+- **Organisez vos ScriptableObjects** : Créez des dossiers dédiés pour vos listes audio
 
 ## 🐛 Dépannage
 
 ### Problèmes Courants
-- **Pas d'Audio** : Vérifiez les assignations AudioSource dans MusicManager
+- **Pas d'Audio** : Vérifiez les assignations AudioSource et ScriptableObjects dans MusicManager
 - **Paramètres Non Sauvegardés** : Assurez-vous que SettingsManager est présent dans la scène
 - **Problèmes de Chargement de Scène** : Vérifiez que le nom de la scène de paramètres correspond dans SettingsLoader
 - **Conflits AudioListener** : Le plugin désactive automatiquement les AudioListeners dans les scènes additives
+- **ScriptableObjects non assignés** : Vérifiez que MusicList et SFXList sont bien assignés dans MusicManager
 
 ### Informations de Débogage
 Le plugin inclut des logs de débogage pour :
 - Clés SFX manquantes
 - Opérations de chargement de scène
 - Changements de volume
+- Chargement des ScriptableObjects
 
 ## 📄 Licence
 
