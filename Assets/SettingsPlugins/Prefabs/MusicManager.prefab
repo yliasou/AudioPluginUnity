@@ -48,12 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 7895833710778484403}
   sfxSource: {fileID: 4714285793566035299}
-  musicList:
-  - {fileID: 8300000, guid: dda93ff582c871240b34e6267693be01, type: 3}
-  - {fileID: 8300000, guid: 23483e6792a539a478bfafd3bd60193f, type: 3}
-  sfxClips:
-  - key: Click
-    clip: {fileID: 8300000, guid: 2cfd92d734c60004e840d8a7f2c1cbfe, type: 3}
+  musicList: {fileID: 11400000, guid: 44f7d2c6385c02344affdec10e06a453, type: 2}
+  sfxList: {fileID: 11400000, guid: 4adb6396b57fbcb4990b45d5b25d3108, type: 2}
   fadeDuration: 0.5
 --- !u!1 &4967182824256705047
 GameObject:

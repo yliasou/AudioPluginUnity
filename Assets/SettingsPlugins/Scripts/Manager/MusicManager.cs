@@ -16,7 +16,7 @@ namespace TheFlow.Audio
         /// <summary>
         /// Key for identifying the SFX.
         /// </summary>
-        public string key;
+        public string key; 
         /// <summary>
         /// AudioClip associated with the key.
         /// </summary>
@@ -32,10 +32,10 @@ namespace TheFlow.Audio
         public AudioSource sfxSource;
 
         [Header("Music List")]
-        public List<AudioClip> musicList = new List<AudioClip>();
+        public MusicList musicList;
 
         [Header("SFX List")]
-        public List<SFXEntry> sfxClips = new List<SFXEntry>();
+        public SFXList sfxList; 
         private Dictionary<string, AudioClip> sfxDictionary = new Dictionary<string, AudioClip>();
 
         [Header("Fade Settings")]
@@ -60,11 +60,14 @@ namespace TheFlow.Audio
             DontDestroyOnLoad(gameObject);
 
             // Load SFX into dictionary
-            foreach (var entry in sfxClips)
+            if (sfxList != null)
             {
-                if (!sfxDictionary.ContainsKey(entry.key) && entry.clip != null)
+                foreach (var entry in sfxList.sfxClips)
                 {
-                    sfxDictionary.Add(entry.key, entry.clip);
+                    if (!sfxDictionary.ContainsKey(entry.key) && entry.clip != null)
+                    {
+                        sfxDictionary.Add(entry.key, entry.clip);
+                    }
                 }
             }
         }
@@ -140,12 +143,12 @@ namespace TheFlow.Audio
         /// <param name="index">Index of the music track to play.</param>
         public void PlayMusicByIndex(int index)
         {
-            if (musicList == null || musicList.Count == 0) return;
+            if (musicList == null || musicList.musicList == null || musicList.musicList.Count == 0) return;
 
-            index = Mathf.Clamp(index, 0, musicList.Count - 1);
+            index = Mathf.Clamp(index, 0, musicList.musicList.Count - 1);
             currentMusicIndex = index;
 
-            AudioClip newClip = musicList[index];
+            AudioClip newClip = musicList.musicList[index];
 
             if (musicSource.clip != newClip)
             {
@@ -188,7 +191,6 @@ namespace TheFlow.Audio
         /// Updates the music playback state, checking if music should be played or looped.    
         private void Update()
         {
-            // If music is not playing and a clip is set, play next in queue or loop
             if (musicSource != null && !musicSource.isPlaying && musicSource.clip != null && fadeCoroutine == null)
             {
                 if (musicQueue.Count > 0)
@@ -197,8 +199,7 @@ namespace TheFlow.Audio
                 }
                 else
                 {
-                    // Loop to next track in list, or back to first
-                    int nextIndex = (currentMusicIndex + 1) % musicList.Count;
+                    int nextIndex = (currentMusicIndex + 1) % (musicList != null ? musicList.musicList.Count : 1);
                     PlayMusicByIndex(nextIndex);
                 }
             }
@@ -212,7 +213,7 @@ namespace TheFlow.Audio
         /// <param name="index">Index of the music track to queue.</param>
         public void QueueMusic(int index)
         {
-            if (index >= 0 && index < musicList.Count)
+            if (musicList != null && index >= 0 && index < musicList.musicList.Count)
                 musicQueue.Enqueue(index);
         }
 
@@ -234,7 +235,8 @@ namespace TheFlow.Audio
         public void QueueAllExceptCurrent()
         {
             musicQueue.Clear();
-            for (int i = 0; i < musicList.Count; i++)
+            if (musicList == null) return;
+            for (int i = 0; i < musicList.musicList.Count; i++)
             {
                 if (i != currentMusicIndex)
                     musicQueue.Enqueue(i);
