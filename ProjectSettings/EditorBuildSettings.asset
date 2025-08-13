@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/SettingsPlugins/Scenes/Demo.unity
+    path: Assets/FlowAudio/Scenes/Demo.unity
     guid: 5fb9c106f83294944bb88e327b5472a9
   - enabled: 1
-    path: Assets/SettingsPlugins/Scenes/Settings.unity
+    path: Assets/FlowAudio/Scenes/Settings.unity
     guid: 5fd152598c72abb4d92d9e468f0f80cb
   m_configObjects: {}
